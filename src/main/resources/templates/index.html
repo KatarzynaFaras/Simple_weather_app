@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{../css/style.css}" href="../static/css/style.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chat</title>
+</head>
+<body>
+
+<div id="main">
+    <h1>CHECK WEATHER</h1>
+    <form th:action="@{/index}" th:object="${location}" th:method="post">
+
+        <label for="city">CITY</label>
+        <input type="text" id="city" name="city"/>
+
+        <label for="country">COUNTRY</label>
+        <input type="text" id="country" name="country" autofocus="autofocus"/>
+
+
+
+        <input class="button" type="submit" value="CHECK"/>
+
+    </form>
+</div>
+</body>
+</html>
