@@ -3,11 +3,15 @@ package pl.katarzynafaras.weatherapp.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Data
 public class WeatherSummary {
 
     private final String country;
     private final String city;
+    private final LocalDateTime date;
     private final Integer code;
     private final String icon;
     private final double temperature;
@@ -16,11 +20,18 @@ public class WeatherSummary {
     public WeatherSummary(Location location, Weather weather) {
         this.country = location.getCountry();
         this.city = location.getCity();
+        this.date = weather.getTimestamp();
         this.code = weather.getWeatherId();
         this.icon = weather.getWeatherIcon();
         this.temperature = weather.getTemperature();
         this.description = weather.getDescription();
     }
+
+    public  String getDateAndTime(){
+        String dateAndTime = this.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+        return dateAndTime;
+    }
+
 
     public String getCelsiusTemperature(){
         double celsiusTemp = this.temperature -273.15;

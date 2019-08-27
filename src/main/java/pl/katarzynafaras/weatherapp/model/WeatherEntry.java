@@ -6,13 +6,16 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
 @Data
 public class WeatherEntry implements Serializable {
 
-    private Instant timestamp;
+    private LocalDateTime timestamp;
 
     private double temperature;
 
@@ -23,14 +26,24 @@ public class WeatherEntry implements Serializable {
     private String description;
 
 
+//    @JsonProperty("timestamp")
+//    public Instant getTimestamp() {
+//        return this.timestamp;
+//    }
+
     @JsonProperty("timestamp")
-    public Instant getTimestamp() {
+    public LocalDateTime getTimestamp() {
+
         return this.timestamp;
     }
 
+//    @JsonSetter("dt")
+//    public void setTimestamp(long unixTime) {
+//        this.timestamp = Instant.ofEpochSecond(unixTime);
+//    }
     @JsonSetter("dt")
     public void setTimestamp(long unixTime) {
-        this.timestamp = Instant.ofEpochMilli(unixTime * 1000);
+        this.timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(unixTime * 1000), ZoneId.of("UTC+02:00"));
     }
 
     @JsonProperty("main")
@@ -44,6 +57,7 @@ public class WeatherEntry implements Serializable {
         setWeatherId((Integer) weather.get("id"));
         setWeatherIcon((String) weather.get("icon"));
         setDescription((String) weather.get("description"));
+
     }
 }
 
