@@ -15,6 +15,8 @@ import java.util.Map;
 @Data
 public class WeatherEntry implements Serializable {
 
+    private String name;
+
     private LocalDateTime timestamp;
 
     private double temperature;

@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 import pl.katarzynafaras.weatherapp.WeatherAppProperties;
-import pl.katarzynafaras.weatherapp.model.Weather;
+
+import pl.katarzynafaras.weatherapp.model.WeatherEntry;
 import pl.katarzynafaras.weatherapp.model.WeatherForecast;
 
 import java.net.URI;
@@ -34,10 +35,10 @@ public class WeatherService {
     }
 
     @Cacheable("weather")
-    public Weather getWeather(String country, String city) {
+    public WeatherEntry getWeather(String country, String city) {
         logger.info("Requesting current weather for {}/{}", country, city);
         URI url = new UriTemplate(WEATHER_URL).expand(city,country, this.apiKey);
-        return invoke(url, Weather.class);
+        return invoke(url, WeatherEntry.class);
     }
 
 

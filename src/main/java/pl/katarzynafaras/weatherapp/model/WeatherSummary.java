@@ -17,7 +17,7 @@ public class WeatherSummary {
     private final double temperature;
     private final String description;
 
-    public WeatherSummary(Location location, Weather weather) {
+    public WeatherSummary(Location location, WeatherEntry weather) {
         this.country = location.getCountry();
         this.city = location.getCity();
         this.date = weather.getTimestamp();
@@ -28,7 +28,12 @@ public class WeatherSummary {
     }
 
     public  String getDateAndTime(){
-        String dateAndTime = this.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+        String dateAndTime = this.date.format(DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"));
+        return dateAndTime;
+    }
+
+    public  String getTime(){
+        String dateAndTime = this.date.format(DateTimeFormatter.ofPattern("HH:mm"));
         return dateAndTime;
     }
 

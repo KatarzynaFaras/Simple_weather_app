@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" type="text/css" th:href="@{../css/owfont-regular.min.css}" href="../static/css/owfont-regular.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{../css/owfont-regular.min.css}"
+          href="../static/css/owfont-regular.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{../css/style.css}" href="../static/css/style.css">
     <title>Weather summary</title>
 </head>
 <body>
 
 <div id="main">
-    <h1 th:text="${location.country.toUpperCase()} + '/ ' + ${location.city.toUpperCase()}">WEATHER FOR </h1>
+    <h1 th:text="${location.country.toUpperCase()} + '/' + ${location.city.toUpperCase()}">WEATHER FOR </h1>
 
     <div>
         <h2 th:text="${weatherSummary.getDateAndTime()}"></h2>
@@ -21,13 +22,20 @@
     </div>
 
     <div class="desc" th:object="${weatherSummary}">
-        <i th:class="'owf owf-' + *{code} + ' owf-4x'" style="opacity: 0.4"></i>
+        <i th:class="'owf owf-' + *{code} + ' owf-2x'" style="opacity: 0.4"></i>
         <h2 th:text="${weatherSummary.description}">description</h2>
     </div>
 
+<div class="forecast">
+        <ul data-th-each="summary : ${weatherSumaries}">
+            <li data-th-text="${summary.getTime()}">...</li>
+            <li th:class="'owf owf-' + *{summary.code} + ' owf-1x'" style="opacity: 0.4"></li>
+            <li data-th-text="${summary.getCelsiusTemperature()}+ '°C'">...</li>
+        </ul>
+</div>
 
 
-    <a href="/" >GO BACK</a>
+    <a href="/">GO BACK</a>
 
 </div>
 </body>

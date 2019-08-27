@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.katarzynafaras.weatherapp.WeatherAppProperties;
-import pl.katarzynafaras.weatherapp.model.Location;
-import pl.katarzynafaras.weatherapp.model.Weather;
-import pl.katarzynafaras.weatherapp.model.WeatherSummary;
+import pl.katarzynafaras.weatherapp.model.*;
 import pl.katarzynafaras.weatherapp.service.WeatherService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -33,14 +34,35 @@ public class WeatherSummaryController {
 
     @PostMapping("/index")
     public String addLocation(@ModelAttribute(name = "location") Location location, Model model, Local local) {
-        Weather weather = this.weatherService.getWeather(location.getCountry(), location.getCity());
+
+        WeatherEntry weather = this.weatherService.getWeather(location.getCountry(), location.getCity());
         WeatherSummary weatherSummary = createWeatherSummary(location, weather);
         model.addAttribute("weatherSummary", weatherSummary);
+
+
+        WeatherForecast weatherForecast = this.weatherService.getForecast(location.getCountry(), location.getCity());
+        List<WeatherEntry> entriesList = weatherForecast.getEntries();
+        List<WeatherSummary> weatherSummaries = new ArrayList<>();
+        for (WeatherEntry entry: entriesList) {
+            if(entry.getTimestamp().getDayOfMonth()==(weather.getTimestamp().getDayOfMonth()))
+            weatherSummaries.add(createWeatherSummary(location,entry));
+        }
+        model.addAttribute("weatherSumaries",weatherSummaries);
+
         return "summary";
     }
 
 
-    private WeatherSummary createWeatherSummary(Location location, Weather weather) {
+
+
+    private WeatherSummary createWeatherSummary(Location location, WeatherEntry weather) {
         return new WeatherSummary(location, weather);
     }
+
+//    private List<WeatherSummary> createListOfWeatherSummary(Location location, Weather weather) {
+//        List<WeatherSummary> listOfWeatherSummery = new ArrayList<>();
+//        listOfWeatherSummery.add(location, )
+//
+//        return new WeatherSummary(location, weather);
+//    }
 }
