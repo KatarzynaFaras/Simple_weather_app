@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 import pl.katarzynafaras.weatherapp.WeatherAppProperties;
 import pl.katarzynafaras.weatherapp.model.Weather;
+import pl.katarzynafaras.weatherapp.model.WeatherForecast;
 
 import java.net.URI;
 
@@ -20,6 +21,8 @@ import java.net.URI;
 public class WeatherService {
 
     private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?q={city},{country}&APPID={key}";
+    private static final String FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?q={city},{country}&APPID={key}";
+
     private final RestTemplate restTemplate;
     private final String apiKey;
 
@@ -35,6 +38,14 @@ public class WeatherService {
         logger.info("Requesting current weather for {}/{}", country, city);
         URI url = new UriTemplate(WEATHER_URL).expand(city,country, this.apiKey);
         return invoke(url, Weather.class);
+    }
+
+
+    @Cacheable("forecast")
+    public WeatherForecast getForecast(String country, String city) {
+        logger.info("Requesting weather forecast for {}/{}", country, city);
+        URI url = new UriTemplate(FORECAST_URL).expand(city, country, this.apiKey);
+        return invoke(url, WeatherForecast.class);
     }
 
     private<T> T invoke(URI url, Class<T> responseType){
