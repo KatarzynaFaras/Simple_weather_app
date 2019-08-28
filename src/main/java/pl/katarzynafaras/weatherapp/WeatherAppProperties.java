@@ -1,11 +1,8 @@
 package pl.katarzynafaras.weatherapp;
 
-
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-
 
 import javax.validation.constraints.NotNull;
 
@@ -13,7 +10,6 @@ import javax.validation.constraints.NotNull;
 @PropertySource("classpath:application.properties")
 @ConfigurationProperties(prefix = "app.weather")
 public class WeatherAppProperties {
-
 
     @NotNull
     private String key;

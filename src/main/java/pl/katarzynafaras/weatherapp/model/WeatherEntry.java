@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -16,22 +15,12 @@ import java.util.Map;
 public class WeatherEntry implements Serializable {
 
     private String name;
-
     private LocalDateTime timestamp;
-
     private double temperature;
-
     private Integer weatherId;
-
     private String weatherIcon;
-
     private String description;
 
-
-//    @JsonProperty("timestamp")
-//    public Instant getTimestamp() {
-//        return this.timestamp;
-//    }
 
     @JsonProperty("timestamp")
     public LocalDateTime getTimestamp() {
@@ -39,10 +28,6 @@ public class WeatherEntry implements Serializable {
         return this.timestamp;
     }
 
-//    @JsonSetter("dt")
-//    public void setTimestamp(long unixTime) {
-//        this.timestamp = Instant.ofEpochSecond(unixTime);
-//    }
     @JsonSetter("dt")
     public void setTimestamp(long unixTime) {
         this.timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(unixTime * 1000), ZoneId.of("UTC+02:00"));
@@ -59,7 +44,6 @@ public class WeatherEntry implements Serializable {
         setWeatherId((Integer) weather.get("id"));
         setWeatherIcon((String) weather.get("icon"));
         setDescription((String) weather.get("description"));
-
     }
 }
 

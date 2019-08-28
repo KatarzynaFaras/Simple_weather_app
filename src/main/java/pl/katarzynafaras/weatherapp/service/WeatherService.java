@@ -12,10 +12,14 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 import pl.katarzynafaras.weatherapp.WeatherAppProperties;
 
+import pl.katarzynafaras.weatherapp.model.Location;
 import pl.katarzynafaras.weatherapp.model.WeatherEntry;
 import pl.katarzynafaras.weatherapp.model.WeatherForecast;
+import pl.katarzynafaras.weatherapp.model.WeatherSummary;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -26,7 +30,6 @@ public class WeatherService {
 
     private final RestTemplate restTemplate;
     private final String apiKey;
-
     private static final Logger logger = LoggerFactory.getLogger(WeatherService.class);
 
     public WeatherService(RestTemplateBuilder restTemplateBuilder, WeatherAppProperties weatherAppProperties) {
@@ -37,10 +40,13 @@ public class WeatherService {
     @Cacheable("weather")
     public WeatherEntry getWeather(String country, String city) {
         logger.info("Requesting current weather for {}/{}", country, city);
-        URI url = new UriTemplate(WEATHER_URL).expand(city,country, this.apiKey);
+        URI url = new UriTemplate(WEATHER_URL).expand(city, country, this.apiKey);
         return invoke(url, WeatherEntry.class);
     }
 
+    public WeatherSummary getWeatherSummary(Location location) {
+        return new WeatherSummary(location, getWeather(location.getCountry(), location.getCity()));
+    }
 
     @Cacheable("forecast")
     public WeatherForecast getForecast(String country, String city) {
@@ -49,7 +55,19 @@ public class WeatherService {
         return invoke(url, WeatherForecast.class);
     }
 
-    private<T> T invoke(URI url, Class<T> responseType){
+    public List<WeatherSummary> getListOfWeatherSummaries(Location location) {
+        List<WeatherEntry> entriesList = getForecast(location.getCountry(), location.getCity()).getEntries();
+        List<WeatherSummary> weatherSummaries = new ArrayList<>();
+        for (WeatherEntry entry : entriesList) {
+            if (entry.getTimestamp().getDayOfMonth() == (getWeather(location.getCountry(), location.getCity()).getTimestamp().getDayOfMonth()))
+                weatherSummaries.add(new WeatherSummary(location, entry));
+        }
+
+        return weatherSummaries;
+
+    }
+
+    private <T> T invoke(URI url, Class<T> responseType) {
         RequestEntity<?> request = RequestEntity.get(url)
                 .accept(MediaType.APPLICATION_JSON).build();
         ResponseEntity<T> exchange = this.restTemplate

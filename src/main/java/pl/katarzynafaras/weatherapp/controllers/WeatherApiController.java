@@ -13,19 +13,19 @@ import pl.katarzynafaras.weatherapp.service.WeatherService;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/weather")
-public class   WeatherApiController {
+public class WeatherApiController {
 
     private final WeatherService weatherService;
 
     @RequestMapping("/now/{country}/{city}")
-    public WeatherEntry getWeather(@PathVariable String country, @PathVariable String city){
-        return this.weatherService.getWeather(country,city);
+    public WeatherEntry getWeather(@PathVariable String country, @PathVariable String city) {
+        return this.weatherService.getWeather(country, city);
     }
 
     @RequestMapping("/forecast/{country}/{city}")
     public WeatherForecast getHourlyForecast(@PathVariable String country,
-                                             @PathVariable String city){
-        return  this.weatherService.getForecast(country,city);
+                                             @PathVariable String city) {
+        return this.weatherService.getForecast(country, city);
     }
 
 }

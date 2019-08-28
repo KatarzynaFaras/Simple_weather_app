@@ -13,9 +13,6 @@ import pl.katarzynafaras.weatherapp.WeatherAppProperties;
 import pl.katarzynafaras.weatherapp.model.*;
 import pl.katarzynafaras.weatherapp.service.WeatherService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @AllArgsConstructor
 @Controller
@@ -25,44 +22,17 @@ public class WeatherSummaryController {
     private final WeatherService weatherService;
     private final WeatherAppProperties properties;
 
-
     @GetMapping("/index")
     public String index() {
         return "index";
     }
 
-
     @PostMapping("/index")
     public String addLocation(@ModelAttribute(name = "location") Location location, Model model, Local local) {
 
-        WeatherEntry weather = this.weatherService.getWeather(location.getCountry(), location.getCity());
-        WeatherSummary weatherSummary = createWeatherSummary(location, weather);
-        model.addAttribute("weatherSummary", weatherSummary);
-
-
-        WeatherForecast weatherForecast = this.weatherService.getForecast(location.getCountry(), location.getCity());
-        List<WeatherEntry> entriesList = weatherForecast.getEntries();
-        List<WeatherSummary> weatherSummaries = new ArrayList<>();
-        for (WeatherEntry entry: entriesList) {
-            if(entry.getTimestamp().getDayOfMonth()==(weather.getTimestamp().getDayOfMonth()))
-            weatherSummaries.add(createWeatherSummary(location,entry));
-        }
-        model.addAttribute("weatherSumaries",weatherSummaries);
-
+        model.addAttribute("weatherSummary", weatherService.getWeatherSummary(location));
+        model.addAttribute("weatherSumaries", weatherService.getListOfWeatherSummaries(location));
         return "summary";
     }
 
-
-
-
-    private WeatherSummary createWeatherSummary(Location location, WeatherEntry weather) {
-        return new WeatherSummary(location, weather);
-    }
-
-//    private List<WeatherSummary> createListOfWeatherSummary(Location location, Weather weather) {
-//        List<WeatherSummary> listOfWeatherSummery = new ArrayList<>();
-//        listOfWeatherSummery.add(location, )
-//
-//        return new WeatherSummary(location, weather);
-//    }
 }
