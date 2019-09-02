@@ -18,8 +18,10 @@ import pl.katarzynafaras.weatherapp.model.WeatherForecast;
 import pl.katarzynafaras.weatherapp.model.WeatherSummary;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -55,16 +57,31 @@ public class WeatherService {
         return invoke(url, WeatherForecast.class);
     }
 
-    public List<WeatherSummary> getListOfWeatherSummaries(Location location) {
-        List<WeatherEntry> entriesList = getForecast(location.getCountry(), location.getCity()).getEntries();
+//    public List<WeatherSummary> getListOfWeatherSummaries(Location location) {
+//        List<WeatherEntry> entriesList = getForecast(location.getCountry(), location.getCity()).getEntries();
+//        List<WeatherSummary> weatherSummaries = new ArrayList<>();
+//        for (WeatherEntry entry : entriesList) {
+//            if (entry.getTimestamp().getDayOfMonth() == (getWeather(location.getCountry(), location.getCity()).getTimestamp().getDayOfMonth()))
+//                weatherSummaries.add(new WeatherSummary(location, entry));
+//        }
+//
+//        return weatherSummaries;
+//
+//    }
+
+    public List<WeatherSummary> getListOfTodayWeatherSummaries(Location location) {
+
+         List<WeatherEntry> todayWeatherEntryList = getForecast(location.getCountry(), location.getCity()).getEntries().stream()
+                .filter(wS -> wS.getTimestamp().getDayOfMonth()
+                        == (LocalDateTime.now().getDayOfMonth()))
+                .collect(Collectors.toList());
         List<WeatherSummary> weatherSummaries = new ArrayList<>();
-        for (WeatherEntry entry : entriesList) {
-            if (entry.getTimestamp().getDayOfMonth() == (getWeather(location.getCountry(), location.getCity()).getTimestamp().getDayOfMonth()))
+        for (WeatherEntry entry : todayWeatherEntryList) {
+            if (entry.getTimestamp().getDayOfMonth() == (LocalDateTime.now().getDayOfMonth()))
                 weatherSummaries.add(new WeatherSummary(location, entry));
         }
 
         return weatherSummaries;
-
     }
 
     private <T> T invoke(URI url, Class<T> responseType) {

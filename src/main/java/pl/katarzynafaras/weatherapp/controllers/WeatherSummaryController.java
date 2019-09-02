@@ -31,7 +31,7 @@ public class WeatherSummaryController {
     public String addLocation(@ModelAttribute(name = "location") Location location, Model model, Local local) {
 
         model.addAttribute("weatherSummary", weatherService.getWeatherSummary(location));
-        model.addAttribute("weatherSumaries", weatherService.getListOfWeatherSummaries(location));
+        model.addAttribute("weatherSummaries", weatherService.getListOfTodayWeatherSummaries(location));
         return "summary";
     }
 

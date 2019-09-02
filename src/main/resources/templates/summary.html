@@ -27,7 +27,7 @@
     </div>
 
 <div class="forecast">
-        <ul data-th-each="summary : ${weatherSumaries}">
+        <ul data-th-each="summary : ${weatherSummaries}">
             <li data-th-text="${summary.getTime()}">...</li>
             <li th:class="'owf owf-' + *{summary.code} + ' owf-1x'" style="opacity: 0.4"></li>
             <li data-th-text="${summary.getCelsiusTemperature()}+ '°C'">...</li>
