@@ -45,6 +45,7 @@ public class WeatherEntry implements Serializable {
         setWeatherIcon((String) weather.get("icon"));
         setDescription((String) weather.get("description"));
     }
+
 }
 
 

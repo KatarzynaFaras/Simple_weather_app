@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 public class WeatherForecast implements Serializable {
@@ -17,7 +19,7 @@ public class WeatherForecast implements Serializable {
 
     @JsonProperty("entries")
     public List<WeatherEntry> getEntries() {
-        return this.entries;
+        return entries;
     }
 
     @JsonSetter("list")
@@ -25,8 +27,22 @@ public class WeatherForecast implements Serializable {
         this.entries = entries;
     }
 
+    @JsonProperty("todayEntries")
+    public List<WeatherEntry> getTodayEntries() {
+        return this.entries.stream().filter(entry -> entry.getTimestamp().getDayOfMonth()== LocalDateTime.now().getDayOfMonth()).collect(Collectors.toList());
+    }
+
+
     @JsonProperty("city")
     public void setCity(Map<String, Object> city) {
+        this.entries.forEach(entry -> entry.setName(city.get("name").toString()));
         setName(city.get("name").toString());
-    }
-}
+    }}
+
+
+//
+//    @JsonProperty("day")
+//    public void setDay(Map<String, Object> name) {
+//        setName(name.get("name").toString());
+//    }
+//}

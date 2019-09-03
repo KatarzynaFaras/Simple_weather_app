@@ -10,7 +10,7 @@
 
 <div id="main">
     <h1>CHECK WEATHER</h1>
-    <form th:action="@{/index}" th:object="${location}" th:method="post">
+    <form th:action="@{/index}" th:object="${weatherEntry}" th:method="post">
 
         <label for="city">CITY</label>
         <input type="text" id="city" name="city"/>

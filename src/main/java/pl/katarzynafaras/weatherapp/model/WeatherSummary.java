@@ -17,9 +17,9 @@ public class WeatherSummary {
     private final double temperature;
     private final String description;
 
-    public WeatherSummary(Location location, WeatherEntry weather) {
-        this.country = location.getCountry();
-        this.city = location.getCity();
+    public WeatherSummary(String city, String country, WeatherEntry weather) {
+        this.country = country;
+        this.city = city;
         this.date = weather.getTimestamp();
         this.code = weather.getWeatherId();
         this.icon = weather.getWeatherIcon();

@@ -11,7 +11,7 @@
 <body>
 
 <div id="main">
-    <h1 th:text="${location.country.toUpperCase()} + '/' + ${location.city.toUpperCase()}">WEATHER FOR </h1>
+    <h1 th:text="${weatherSummary.country.toUpperCase()} + '/' + ${weatherSummary.city.toUpperCase()}">WEATHER FOR </h1>
 
     <div>
         <h2 th:text="${weatherSummary.getDateAndTime()}"></h2>
@@ -27,7 +27,7 @@
     </div>
 
 <div class="forecast">
-        <ul data-th-each="summary : ${weatherSummaries}">
+        <ul data-th-each="summary : ${todayWeatherSummaries}">
             <li data-th-text="${summary.getTime()}">...</li>
             <li th:class="'owf owf-' + *{summary.code} + ' owf-1x'" style="opacity: 0.4"></li>
             <li data-th-text="${summary.getCelsiusTemperature()}+ '°C'">...</li>

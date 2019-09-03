@@ -28,10 +28,11 @@ public class WeatherSummaryController {
     }
 
     @PostMapping("/index")
-    public String addLocation(@ModelAttribute(name = "location") Location location, Model model, Local local) {
+    public String addLocation(String city, String country, Model model, Local local) {
 
-        model.addAttribute("weatherSummary", weatherService.getWeatherSummary(location));
-        model.addAttribute("weatherSummaries", weatherService.getListOfTodayWeatherSummaries(location));
+        model.addAttribute("weatherSummary", weatherService.getWeatherSummary(country, city));
+        model.addAttribute("weatherSummaries", weatherService.getForecast(country,city));
+        model.addAttribute("todayWeatherSummaries", weatherService.getListOfTodayWeatherSummaries(country,city));
         return "summary";
     }
 
