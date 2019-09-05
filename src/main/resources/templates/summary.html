@@ -11,7 +11,7 @@
 <body>
 
 <div id="main">
-    <h1 th:text="${weatherSummary.country.toUpperCase()} + '/' + ${weatherSummary.city.toUpperCase()}">WEATHER FOR </h1>
+    <h1 th:text="${weatherSummary.city.toUpperCase()}">WEATHER FOR </h1>
 
     <div>
         <h2 th:text="${weatherSummary.getDateAndTime()}"></h2>
@@ -35,7 +35,7 @@
 </div>
 
 
-    <a href="/">GO BACK</a>
+    <a class="button" href="/">GO BACK</a>
 
 </div>
 </body>

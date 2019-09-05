@@ -14,13 +14,13 @@ import java.util.Map;
 @Data
 public class WeatherEntry implements Serializable {
 
+    private String city;
     private String name;
     private LocalDateTime timestamp;
     private double temperature;
     private Integer weatherId;
     private String weatherIcon;
     private String description;
-
 
     @JsonProperty("timestamp")
     public LocalDateTime getTimestamp() {
@@ -46,6 +46,10 @@ public class WeatherEntry implements Serializable {
         setDescription((String) weather.get("description"));
     }
 
+    @JsonProperty("name")
+    public void setName(String name1) {
+        this.city = name1;
+    }
 }
 
 

@@ -14,7 +14,7 @@ import pl.katarzynafaras.weatherapp.WeatherAppProperties;
 import pl.katarzynafaras.weatherapp.model.WeatherEntry;
 import pl.katarzynafaras.weatherapp.model.WeatherForecast;
 import pl.katarzynafaras.weatherapp.model.WeatherSummary;
-
+;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ import java.util.List;
 @Service
 public class WeatherService {
 
-    private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?q={city},{country}&APPID={key}";
-    private static final String FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?q={city},{country}&APPID={key}";
+    private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?q={city}&APPID={key}";
+    private static final String FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?q={city}&APPID={key}";
 
     private final RestTemplate restTemplate;
     private final String apiKey;
@@ -36,34 +36,34 @@ public class WeatherService {
     }
 
     @Cacheable("weather")
-    public WeatherEntry getWeather(String country, String city) {
-        logger.info("Requesting current weather for {}/{}", country, city);
-        URI url = new UriTemplate(WEATHER_URL).expand(city, country, this.apiKey);
+    public WeatherEntry getWeather(String city) {
+        logger.info("Requesting current weather for {}", city);
+        URI url = new UriTemplate(WEATHER_URL).expand(city, this.apiKey);
         return invoke(url, WeatherEntry.class);
     }
 
-    public WeatherSummary getWeatherSummary(String country, String city) {
-        return new WeatherSummary(country, city, getWeather(country, city));
+    public WeatherSummary getWeatherSummary(String city) {
+        return new WeatherSummary(city, getWeather(city));
     }
 
     @Cacheable("forecast")
-    public WeatherForecast getForecast(String country, String city) {
-        logger.info("Requesting weather forecast for {}/{}", country, city);
-        URI url = new UriTemplate(FORECAST_URL).expand(city, country, this.apiKey);
+    public WeatherForecast getForecast(String city) {
+        logger.info("Requesting weather forecast for {}", city);
+        URI url = new UriTemplate(FORECAST_URL).expand(city, this.apiKey);
         return invoke(url, WeatherForecast.class);
     }
 
 
-    public List<WeatherEntry> getListOfTodayWeatherEntries(String country, String city) {
-        return getForecast(country, city).getTodayEntries();
+    public List<WeatherEntry> getListOfTodayWeatherEntries(String city) {
+        return getForecast(city).getTodayEntries();
     }
 
 
-    public List<WeatherSummary> getListOfTodayWeatherSummaries(String country, String city) {
+    public List<WeatherSummary> getListOfTodayWeatherSummaries(String city) {
 
-        List<WeatherEntry> todayWeatherEntryList = getListOfTodayWeatherEntries(country, city);
+        List<WeatherEntry> todayWeatherEntryList = getListOfTodayWeatherEntries(city);
         List<WeatherSummary> weatherSummaries = new ArrayList<>();
-        todayWeatherEntryList.forEach(weatherEntry -> weatherSummaries.add(new WeatherSummary(country, city, weatherEntry)));
+        todayWeatherEntryList.forEach(weatherEntry -> weatherSummaries.add(new WeatherSummary(city, weatherEntry)));
 
         return weatherSummaries;
     }

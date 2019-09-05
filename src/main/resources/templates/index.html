@@ -10,13 +10,11 @@
 
 <div id="main">
     <h1>CHECK WEATHER</h1>
-    <form th:action="@{/index}" th:object="${weatherEntry}" th:method="post">
+
+    <form th:action="@{/index}" th:object="${form}" th:method="post">
 
         <label for="city">CITY</label>
         <input type="text" id="city" name="city"/>
-
-        <label for="country">COUNTRY</label>
-        <input type="text" id="country" name="country" autofocus="autofocus"/>
 
         <input class="button" type="submit" value="CHECK"/>
 

@@ -2,16 +2,15 @@ package pl.katarzynafaras.weatherapp.controllers;
 
 
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.jni.Local;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import pl.katarzynafaras.weatherapp.WeatherAppProperties;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import pl.katarzynafaras.weatherapp.model.*;
 import pl.katarzynafaras.weatherapp.service.WeatherService;
+
+import javax.validation.Valid;
 
 
 @AllArgsConstructor
@@ -20,7 +19,7 @@ import pl.katarzynafaras.weatherapp.service.WeatherService;
 public class WeatherSummaryController {
 
     private final WeatherService weatherService;
-    private final WeatherAppProperties properties;
+
 
     @GetMapping("/index")
     public String index() {
@@ -28,12 +27,15 @@ public class WeatherSummaryController {
     }
 
     @PostMapping("/index")
-    public String addLocation(String city, String country, Model model, Local local) {
-
-        model.addAttribute("weatherSummary", weatherService.getWeatherSummary(country, city));
-        model.addAttribute("weatherSummaries", weatherService.getForecast(country,city));
-        model.addAttribute("todayWeatherSummaries", weatherService.getListOfTodayWeatherSummaries(country,city));
-        return "summary";
+    public String addLocation(@ModelAttribute("form") @Valid FormDTO formDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "index";
+        } else {
+            model.addAttribute("weatherSummary", weatherService.getWeatherSummary(formDTO.getCity()));
+            model.addAttribute("weatherSummaries", weatherService.getForecast(formDTO.getCity()));
+            model.addAttribute("todayWeatherSummaries", weatherService.getListOfTodayWeatherSummaries(formDTO.getCity()));
+            return "summary";
+        }
     }
 
 }

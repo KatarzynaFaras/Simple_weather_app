@@ -29,20 +29,15 @@ public class WeatherForecast implements Serializable {
 
     @JsonProperty("todayEntries")
     public List<WeatherEntry> getTodayEntries() {
-        return this.entries.stream().filter(entry -> entry.getTimestamp().getDayOfMonth()== LocalDateTime.now().getDayOfMonth()).collect(Collectors.toList());
+        return this.entries.stream().filter(entry -> entry.getTimestamp().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()).collect(Collectors.toList());
     }
-
 
     @JsonProperty("city")
     public void setCity(Map<String, Object> city) {
         this.entries.forEach(entry -> entry.setName(city.get("name").toString()));
         setName(city.get("name").toString());
-    }}
+
+    }
 
 
-//
-//    @JsonProperty("day")
-//    public void setDay(Map<String, Object> name) {
-//        setName(name.get("name").toString());
-//    }
-//}
+}
